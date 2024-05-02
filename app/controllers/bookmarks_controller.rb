@@ -4,11 +4,12 @@ class BookmarksController < ApplicationController
   before_action :set_movie, only: %i[new create]
 
   def index
-    @bookmark = Bookmark.all
+    @bookmarks = Bookmark.all
   end
 
   def new
     @bookmark = Bookmark.new
+    @list = List.find(params[:list_id])
   end
 
   def show
@@ -16,24 +17,27 @@ class BookmarksController < ApplicationController
   end
 
   def create
-    @bookmark = bookmark.new(bookmark_params)
+    @bookmark = Bookmark.new(bookmark_params)
+    @list = List.find(params[:list_id])
+    @bookmark.list = @list
+
     if @bookmark.save
       redirect_to @bookmark, notice: 'bookmark successfully created.'
     else
       render :new
     end
   end
-
+ private
   def destroy
     @bookmark = Bookmark.find(params[:id])
     @bookmark.destroy
-    redirect_to movie_path(@bookmark.movie), status: :see_other
+    redirect_to movies_new_path(@bookmark.movie), status: :see_other
   end
 
   private
 
   def bookmark_params
-    params.require(:bookmark).permit(:content, :rating)
+    params.require(:bookmark).permit(:comment, :movie_id)
   end
 
   def set_movie
@@ -42,6 +46,6 @@ class BookmarksController < ApplicationController
 
     # Handle the case where the movie doesn't exist
     # For example, redirect back with a flash message
-    redirect_to movie_path, alert: 'Movie not found'
+    redirect_to movies_new_path, alert: 'Movie not found'
   end
 end
