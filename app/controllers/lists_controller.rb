@@ -6,17 +6,17 @@ class ListsController < ApplicationController
   end
 
   def new
-    @lists = List.new
+    @list = List.new
   end
 
   def show
-    @lists = List.find(params[:id])
+    @list = List.find(params[:id])
   end
 
   def create
-    @lists = List.new(list_params)
-    if @lists.save
-      redirect_to @lists, notice: 'list made '
+    @list = List.new(list_params)
+    if @list.save
+      redirect_to @list, notice: 'list made '
     else
       render :new
     end
