@@ -1,0 +1,7 @@
+<h1>Bookmarks#new</h1>
+<p>Find me in app/views/bookmarks/new.html.erb</p>
+
+<%= link_to 'New Bookmark', new_bookmark_path(movie_id: @movie.id) %>
+<%= form_with(model: @bookmark, url: bookmarks_path(movie_id: @movie.id)) do |form| %>
+  ...
+<% end %>
